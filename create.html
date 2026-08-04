@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Create - Bright Side</title>
+<meta name="description" content="Build your own word search on Bright Side - pick a theme and a few words, and get a puzzle made just for you.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<!-- Analytics: replace YOURCODE with your own GoatCounter code, see instructions -->
+<script data-goatcounter="https://YOURCODE.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<style>
+  :root{
+    --bg: #EDF1F2;
+    --surface: #FFFFFF;
+    --ink: #2B3A42;
+    --muted: #7C8B93;
+    --accent: #F2B705;
+    --accent-soft: #FCE9AE;
+    --found-soft: #F7DEDE;
+    --line: #DCE3E5;
+    --radius: 18px;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{
+    max-width:680px;
+    margin:0 auto;
+    padding:32px 20px 80px;
+  }
+  header.top{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:16px;
+    padding-bottom:20px;
+    margin-bottom:32px;
+    border-bottom:1px solid var(--line);
+  }
+  .brand{
+    font-family:'Fraunces', serif;
+    font-weight:700;
+    font-size:22px;
+    letter-spacing:-0.01em;
+  }
+  .brand a{ text-decoration:none; color:var(--ink); }
+  .brand span{ color: var(--accent); }
+  nav.main-nav{
+    display:flex;
+    gap:26px;
+  }
+  .nav-link{
+    font-family:'Inter', sans-serif;
+    font-size:15px;
+    font-weight:500;
+    color:var(--muted);
+    text-decoration:none;
+    padding-bottom:4px;
+    border-bottom:2px solid transparent;
+  }
+  .nav-link:hover{ color:var(--ink); }
+  .nav-link.active{
+    color:var(--ink);
+    font-weight:600;
+    border-bottom:2px solid var(--accent);
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:0.12em;
+    color:var(--muted);
+    margin-bottom:6px;
+  }
+  h1{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:36px;
+    line-height:1.15;
+    margin:0 0 12px;
+    letter-spacing:-0.01em;
+  }
+  .subtitle{
+    font-size:15px;
+    color:var(--muted);
+    margin:0 0 28px;
+    line-height:1.6;
+  }
+  .form-card{
+    background:var(--surface);
+    border-radius:var(--radius);
+    padding:26px 24px;
+    box-shadow:0 1px 2px rgba(43,58,66,0.04), 0 8px 24px rgba(43,58,66,0.06);
+    margin-bottom:24px;
+  }
+  .field-label{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:0.1em;
+    color:var(--muted);
+    display:block;
+    margin-bottom:8px;
+  }
+  input[type="text"]{
+    width:100%;
+    font-family:'Inter', sans-serif;
+    font-size:15px;
+    padding:12px 14px;
+    border-radius:10px;
+    border:1px solid var(--line);
+    background:var(--bg);
+    color:var(--ink);
+    margin-bottom:20px;
+  }
+  input[type="text"]:focus{
+    outline:2px solid var(--accent);
+    outline-offset:1px;
+  }
+  .hint{
+    font-size:13px;
+    color:var(--muted);
+    margin:-14px 0 20px;
+  }
+  #generateBtn{
+    font-family:'Inter', sans-serif;
+    font-size:14px;
+    font-weight:600;
+    padding:12px 22px;
+    border-radius:100px;
+    border:none;
+    background:var(--accent);
+    color:#3d2f00;
+    cursor:pointer;
+  }
+  #generateBtn:hover{ filter:brightness(0.97); }
+  #customError{
+    display:none;
+    margin-top:14px;
+    font-size:13px;
+    color:#B85C5C;
+  }
+  .puzzle-card{
+    background:var(--surface);
+    border-radius:var(--radius);
+    padding:24px;
+    box-shadow:0 1px 2px rgba(43,58,66,0.04), 0 8px 24px rgba(43,58,66,0.06);
+    margin-bottom:24px;
+    display:none;
+  }
+  #puzzleTitle{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:26px;
+    margin:0 0 18px;
+  }
+  #grid{
+    display:grid;
+    gap:2px;
+    touch-action:none;
+    user-select:none;
+    margin:0 auto;
+  }
+  .cell{
+    aspect-ratio:1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family:'IBM Plex Mono', monospace;
+    font-weight:500;
+    font-size:15px;
+    color:var(--ink);
+    border-radius:6px;
+    cursor:pointer;
+    transition:background 0.12s ease;
+  }
+  .cell.selecting{ background:var(--accent-soft); }
+  .cell.found{ background:var(--found-soft); color:#B85C5C; }
+  .wordlist{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-top:20px;
+    padding-top:18px;
+    border-top:1px solid var(--line);
+  }
+  .word-chip{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    padding:6px 10px;
+    border-radius:100px;
+    background:var(--bg);
+    color:var(--muted);
+    letter-spacing:0.02em;
+  }
+  .word-chip.done{
+    background:var(--found-soft);
+    color:#B85C5C;
+    text-decoration:line-through;
+  }
+  .complete-msg{
+    display:none;
+    text-align:center;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:#8a6d00;
+    background:var(--accent-soft);
+    border-radius:100px;
+    padding:8px 16px;
+    margin:0 0 20px;
+  }
+  .share-hint{
+    text-align:center;
+    font-size:13px;
+    color:var(--muted);
+    margin-top:8px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <div class="brand"><a href="index.html">Bright <span>Side</span></a></div>
+    <nav class="main-nav">
+      <a href="index.html" class="nav-link">Today's Puzzle</a>
+      <a href="create.html" class="nav-link active">Create</a>
+      <a href="about.html" class="nav-link">About</a>
+    </nav>
+  </header>
+
+  <div class="eyebrow">Make it yours</div>
+  <h1>Create your own puzzle</h1>
+  <p class="subtitle">Pick a theme and a handful of words, birthdays, inside jokes, someone's favorite things, and we'll build a real puzzle around them.</p>
+
+  <div class="form-card">
+    <label class="field-label" for="customTheme">Theme</label>
+    <input id="customTheme" type="text" placeholder="e.g. My Best Friends">
+
+    <label class="field-label" for="customWords">Words</label>
+    <input id="customWords" type="text" placeholder="e.g. tacos, sunshine, road trip, laughter">
+    <p class="hint">Separate with commas. Letters only, 3–12 letters each, up to 12 words.</p>
+
+    <button id="generateBtn">Generate my puzzle</button>
+    <p id="customError"></p>
+  </div>
+
+  <div class="complete-msg" id="completeMsg">All found - nice work.</div>
+
+  <div class="puzzle-card" id="puzzleCard">
+    <h2 id="puzzleTitle"></h2>
+    <div id="grid"></div>
+    <div class="wordlist" id="wordlist"></div>
+  </div>
+
+  <p class="share-hint" id="shareHint" style="display:none;">Tip: screenshot it and send it to whoever it's for.</p>
+
+</div>
+
+<script>
+/* ---------- GRID GENERATOR (same engine as the daily puzzle) ---------- */
+const GRID_SIZE = 10;
+const DIRECTIONS = [[0,1],[1,0],[1,1],[-1,1],[0,-1],[-1,0],[-1,-1],[1,-1]];
+
+function buildGrid(words){
+  const size = GRID_SIZE;
+  let grid = Array.from({length:size}, () => Array(size).fill(null));
+  const placements = {};
+
+  function tryPlace(word){
+    const attempts = 200;
+    for(let a=0;a<attempts;a++){
+      const dir = DIRECTIONS[Math.floor(Math.random()*DIRECTIONS.length)];
+      const row0 = Math.floor(Math.random()*size);
+      const col0 = Math.floor(Math.random()*size);
+      const endRow = row0 + dir[0]*(word.length-1);
+      const endCol = col0 + dir[1]*(word.length-1);
+      if(endRow<0||endRow>=size||endCol<0||endCol>=size) continue;
+      let ok = true;
+      for(let i=0;i<word.length;i++){
+        const r = row0+dir[0]*i, c = col0+dir[1]*i;
+        if(grid[r][c] !== null && grid[r][c] !== word[i]){ ok=false; break; }
+      }
+      if(!ok) continue;
+      const cells=[];
+      for(let i=0;i<word.length;i++){
+        const r = row0+dir[0]*i, c = col0+dir[1]*i;
+        grid[r][c] = word[i];
+        cells.push([r,c]);
+      }
+      placements[word]=cells;
+      return true;
+    }
+    return false;
+  }
+
+  words.forEach(w => tryPlace(w));
+
+  const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  for(let r=0;r<size;r++) for(let c=0;c<size;c++)
+    if(grid[r][c]===null) grid[r][c] = letters[Math.floor(Math.random()*letters.length)];
+
+  return { grid, placements };
+}
+
+/* ---------- RENDERING + INTERACTION ---------- */
+let state = null;
+let selecting = false;
+let selStart = null;
+let selCells = [];
+let found = new Set();
+
+function renderGrid(){
+  const gridEl = document.getElementById('grid');
+  gridEl.style.gridTemplateColumns = "repeat(" + GRID_SIZE + ", 1fr)";
+  gridEl.style.maxWidth = "440px";
+  gridEl.innerHTML = "";
+  for(let r=0;r<GRID_SIZE;r++){
+    for(let c=0;c<GRID_SIZE;c++){
+      const div = document.createElement('div');
+      div.className = 'cell';
+      div.textContent = state.grid[r][c];
+      div.dataset.r = r; div.dataset.c = c;
+      div.addEventListener('mousedown', startSel);
+      div.addEventListener('mouseenter', moveSel);
+      div.addEventListener('touchstart', touchStart, {passive:false});
+      div.addEventListener('touchmove', touchMove, {passive:false});
+      gridEl.appendChild(div);
+    }
+  }
+  document.addEventListener('mouseup', endSel);
+  document.addEventListener('touchend', endSel);
+}
+
+function cellsInLine(r0,c0,r1,c1){
+  const dr = Math.sign(r1-r0), dc = Math.sign(c1-c0);
+  const len = Math.max(Math.abs(r1-r0), Math.abs(c1-c0)) + 1;
+  const validLine = (r1-r0===0)||(c1-c0===0)||(Math.abs(r1-r0)===Math.abs(c1-c0));
+  if(!validLine) return [];
+  const out=[];
+  for(let i=0;i<len;i++) out.push([r0+dr*i, c0+dc*i]);
+  return out;
+}
+
+function clearSelectingClass(){
+  document.querySelectorAll('.cell.selecting').forEach(function(el){ el.classList.remove('selecting'); });
+}
+
+function startSel(e){
+  selecting = true;
+  selStart = [+e.target.dataset.r, +e.target.dataset.c];
+  selCells = [selStart];
+  clearSelectingClass();
+  e.target.classList.add('selecting');
+}
+function moveSel(e){
+  if(!selecting) return;
+  const r1 = +e.target.dataset.r, c1 = +e.target.dataset.c;
+  selCells = cellsInLine(selStart[0], selStart[1], r1, c1);
+  clearSelectingClass();
+  selCells.forEach(function(pair){
+    const r=pair[0], c=pair[1];
+    const el = document.querySelector('.cell[data-r="'+r+'"][data-c="'+c+'"]');
+    if(el) el.classList.add('selecting');
+  });
+}
+function touchStart(e){
+  e.preventDefault();
+  const t = e.touches[0];
+  const el = document.elementFromPoint(t.clientX, t.clientY);
+  if(el && el.classList.contains('cell')) startSel({target:el});
+}
+function touchMove(e){
+  e.preventDefault();
+  const t = e.touches[0];
+  const el = document.elementFromPoint(t.clientX, t.clientY);
+  if(el && el.classList.contains('cell')) moveSel({target:el});
+}
+function endSel(){
+  if(!selecting) return;
+  selecting = false;
+  checkSelection();
+  clearSelectingClass();
+}
+
+function checkSelection(){
+  const letters = selCells.map(function(pair){ return state.grid[pair[0]][pair[1]]; }).join('');
+  const reversed = letters.split('').reverse().join('');
+  for(const word in state.placements){
+    if(found.has(word)) continue;
+    if(letters === word || reversed === word){
+      found.add(word);
+      selCells.forEach(function(pair){
+        const r=pair[0], c=pair[1];
+        const el = document.querySelector('.cell[data-r="'+r+'"][data-c="'+c+'"]');
+        if(el) el.classList.add('found');
+      });
+      const chip = document.querySelector('.word-chip[data-word="'+word+'"]');
+      if(chip) chip.classList.add('done');
+      break;
+    }
+  }
+  if(found.size === Object.keys(state.placements).length){
+    document.getElementById('completeMsg').style.display = 'block';
+  }
+}
+
+/* ---------- FORM HANDLING ---------- */
+function showError(msg){
+  const el = document.getElementById('customError');
+  el.textContent = msg;
+  el.style.display = 'block';
+}
+function clearError(){
+  document.getElementById('customError').style.display = 'none';
+}
+
+document.getElementById('generateBtn').addEventListener('click', function(){
+  clearError();
+  const themeInput = document.getElementById('customTheme').value.trim();
+  const wordsInput = document.getElementById('customWords').value;
+
+  let words = wordsInput
+    .split(',')
+    .map(function(w){ return w.trim().toUpperCase().replace(/[^A-Z]/g, ''); })
+    .filter(function(w){ return w.length >= 3 && w.length <= 12; });
+
+  words = Array.from(new Set(words)).slice(0, 12);
+
+  if(words.length < 3){
+    showError("Add at least 3 words (letters only, 3–12 letters each) separated by commas.");
+    return;
+  }
+
+  const theme = themeInput || "Your Puzzle";
+  state = buildGrid(words);
+  found = new Set();
+
+  document.getElementById('puzzleTitle').textContent = "✨ " + theme;
+  document.getElementById('completeMsg').style.display = 'none';
+  document.getElementById('puzzleCard').style.display = 'block';
+  document.getElementById('shareHint').style.display = 'block';
+
+  renderGrid();
+  const wl = document.getElementById('wordlist');
+  wl.innerHTML = "";
+  words.forEach(function(w){
+    const chip = document.createElement('span');
+    chip.className = 'word-chip';
+    chip.textContent = w;
+    chip.dataset.word = w;
+    wl.appendChild(chip);
+  });
+
+  document.getElementById('puzzleCard').scrollIntoView({behavior:'smooth', block:'start'});
+});
+</script>
+</body>
+</html>
