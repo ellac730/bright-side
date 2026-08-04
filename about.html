@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About - Bright Side</title>
+<meta name="description" content="Why Bright Side exists: a free daily word search built out of a real mental health story, paired with simple notes on why puzzles like this can help.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #EDF1F2;
+    --surface: #FFFFFF;
+    --ink: #2B3A42;
+    --muted: #7C8B93;
+    --accent: #F2B705;
+    --accent-soft: #FCE9AE;
+    --found-soft: #F7DEDE;
+    --line: #DCE3E5;
+    --radius: 18px;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{
+    max-width:640px;
+    margin:0 auto;
+    padding:48px 20px 80px;
+  }
+  header.top{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    margin-bottom:44px;
+  }
+  .brand{
+    font-family:'Fraunces', serif;
+    font-weight:700;
+    font-size:22px;
+    letter-spacing:-0.01em;
+  }
+  .brand span{ color: var(--accent); }
+  .brand a{ text-decoration:none; color:var(--ink); }
+  nav.top-links a{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--muted);
+    text-decoration:none;
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:0.12em;
+    color:var(--muted);
+    margin-bottom:10px;
+  }
+  h1{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:36px;
+    line-height:1.15;
+    margin:0 0 32px;
+    letter-spacing:-0.01em;
+  }
+  .story-card{
+    background:var(--surface);
+    border-radius:var(--radius);
+    padding:32px 28px;
+    box-shadow:0 1px 2px rgba(43,58,66,0.04), 0 8px 24px rgba(43,58,66,0.06);
+    margin-bottom:24px;
+  }
+  .story-card p{
+    font-size:16px;
+    line-height:1.7;
+    margin:0 0 18px;
+  }
+  .story-card p:last-child{ margin-bottom:0; }
+  .support-card{
+    background:var(--accent-soft);
+    border-radius:var(--radius);
+    padding:24px 28px;
+  }
+  .support-card .label{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:0.12em;
+    color:#8a6d00;
+    margin-bottom:10px;
+  }
+  .support-card p{
+    font-size:15px;
+    line-height:1.6;
+    margin:0 0 12px;
+  }
+  .support-card a{
+    color:#8a6d00;
+    font-weight:600;
+  }
+  .support-card ul{
+    margin:0;
+    padding-left:18px;
+  }
+  .support-card li{
+    font-size:15px;
+    line-height:1.7;
+  }
+  .back{
+    display:inline-block;
+    margin-top:36px;
+    font-family:'Inter', sans-serif;
+    font-size:13px;
+    font-weight:500;
+    color:var(--ink);
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:100px;
+    padding:9px 16px;
+    text-decoration:none;
+  }
+  .back:hover{ border-color:var(--accent); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <div class="brand"><a href="index.html">Bright <span>Side</span></a></div>
+    <nav class="top-links"><a href="index.html">Today's puzzle</a></nav>
+  </header>
+
+  <div class="eyebrow">Why this exists</div>
+  <h1>About Bright Side</h1>
+
+  <div class="story-card">
+    <p>A few years ago, I was struggling. An eating disorder. Depression. Anxiety. All at once. Most days, my mind worked against me.</p>
+    <p>Not much helped. But one small thing did: word searches.</p>
+    <p>Scanning a grid, letter by letter, hunting for one word. It quieted my head like almost nothing else could. It didn't fix anything. It just gave me a few minutes where my attention had somewhere safe to go, instead of spiraling.</p>
+    <p>Bright Side grew out of that. Every puzzle is built around something gentle: kindness, nature, cozy mornings, small wins. Each one comes with a short note on why puzzles like this can actually help your mind settle. It's free. It always will be. Built for anyone who needs five quiet minutes today.</p>
+  </div>
+
+  <div class="support-card">
+    <div class="label">If you're going through something similar</div>
+    <p>It's real, and it's not permanent. A word search isn't a substitute for real support. But if you need somewhere to start:</p>
+    <ul>
+      <li><a href="https://www.allianceforeatingdisorders.com/" target="_blank" rel="noopener">National Alliance for Eating Disorders</a> helpline</li>
+      <li><a href="https://988lifeline.org/" target="_blank" rel="noopener">988 Suicide & Crisis Lifeline</a> — call or text 988, day or night</li>
+    </ul>
+  </div>
+
+  <a class="back" href="index.html">&larr; Back to today's puzzle</a>
+
+</div>
+</body>
+</html>
