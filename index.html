@@ -220,34 +220,81 @@
 /* Add a new object to this array for every new day. That's it - no other code needs to change. */
 const PUZZLES = [
   {
-    theme: "Small Weather",
-    words: ["SUNBEAM","DEWDROP","BREEZE","RAINSCENT","PUDDLE","SNOWFLAKE"],
-    scienceNote: "Searching a grid for a specific shape forces your visual system into 'focused attention' mode, a narrow spotlight that briefly crowds out the wandering, ruminative thinking most of us default to when idle.",
-    reflectionPrompt: "What's one small good thing from today?"
+    theme: "Peaceful Moments",
+    emoji: "🌅",
+    words: ["SUNSHINE","BREEZE","HAMMOCK","BLANKET","FLOWERS","BIRDSONG","MEADOW","LANTERN","RAINBOW"],
+    scienceNote: "Calm, spacious images, like a sunset or a quiet meadow, give your mind something gentle to rest on instead of racing thoughts.",
+    reflectionPrompt: "What's a quiet moment that stuck with you?"
   },
   {
-    theme: "Kitchen Comforts",
-    words: ["TOAST","KETTLE","SOUP","CINNAMON","LEFTOVERS","BUTTER"],
-    scienceNote: "Familiar sensory words for smells, textures, and tastes activate memory regions alongside language areas, part of why a simple word list can feel unexpectedly warm.",
-    reflectionPrompt: "What meal are you looking forward to?"
+    theme: "Kindness",
+    emoji: "💛",
+    words: ["HUG","SMILE","LAUGH","COMFORT","SUPPORT","KINDNESS","PATIENCE","EMPATHY","TRUST","LISTEN","HOPE","SHARE"],
+    scienceNote: "Just reading kind, warm words can lift your mood a little. Your brain doesn't fully separate reading about kindness from feeling it.",
+    reflectionPrompt: "Who could use a kind word today?"
   },
   {
-    theme: "Morning Rituals",
-    words: ["ALARM","STRETCH","COFFEE","SUNLIGHT","QUIET","SLIPPERS"],
-    scienceNote: "Repeating a small ritual each day, like solving one puzzle, builds a predictable cue your brain learns to associate with calm, similar to how a bedtime routine signals it's time to wind down.",
-    reflectionPrompt: "What's one ritual that grounds your day?"
+    theme: "Happiness",
+    emoji: "😊",
+    words: ["GIGGLE","CHEER","DELIGHT","SPARKLE","EXCITED","WONDERFUL","CELEBRATE","PLAYFUL","JOYFUL","SURPRISE"],
+    scienceNote: "Happy words act like a tiny spark for your brain's reward system, the same system that lights up when something good actually happens.",
+    reflectionPrompt: "What made you smile this week?"
   },
   {
-    theme: "Good Company",
-    words: ["LAUGHTER","INSIDEJOKE","HUG","PHONECALL","OLDFRIEND","POSTCARD"],
-    scienceNote: "Even just reading words tied to connection can mildly activate the same reward circuitry as the real experience, one reason social word lists tend to leave people a little lighter.",
-    reflectionPrompt: "Who made you smile recently?"
+    theme: "Positive Mindset",
+    emoji: "🧠",
+    words: ["BREATHE","COURAGE","BRAVE","CALM","FOCUS","PATIENT","GROWTH","MINDFUL","PEACEFUL","STRENGTH"],
+    scienceNote: "Focusing on one small task, like finding a word, is a simple way to practice calming your mind. It's the same basic skill mindfulness teaches.",
+    reflectionPrompt: "What's one thing going right for you lately?"
   },
   {
-    theme: "Quiet Wins",
-    words: ["FINISHED","TIDIED","REPLIED","SHOWEDUP","RESTED","TRIED"],
-    scienceNote: "Noticing and naming small completed actions, even tiny ones, engages the brain's reward pathway in a way that pure rumination never does, part of why small-wins journaling is a real technique.",
-    reflectionPrompt: "What's one small thing you did today that counted?"
+    theme: "Cozy Things",
+    emoji: "☕",
+    words: ["COCOA","COOKIE","CINNAMON","SWEATER","CANDLE","NOVEL","PILLOW","COZY","WARMTH","BAKERY"],
+    scienceNote: "Cozy words call up real memories of comfort, and your brain treats remembering comfort a little like feeling it again.",
+    reflectionPrompt: "What's your favorite way to get cozy?"
+  },
+  {
+    theme: "Nature",
+    emoji: "🌸",
+    words: ["BLOOM","BUTTERFLY","STREAM","PEBBLE","FERN","MOSS","SUNFLOWER","LAVENDER","ROBIN","WATERFALL"],
+    scienceNote: "Just thinking about nature, even in word form, can lower stress a little, the same way a short walk outside does.",
+    reflectionPrompt: "When did you last spend time outside?"
+  },
+  {
+    theme: "Favorite Foods",
+    emoji: "🍓",
+    words: ["STRAWBERRY","BLUEBERRY","PEACH","WATERMELON","CROISSANT","MUFFIN","WAFFLE","LEMONADE","HONEY"],
+    scienceNote: "Food words can make your mouth water and light up your brain almost as if the food were right in front of you, that's how strongly your brain connects words to real experience.",
+    reflectionPrompt: "What's a food that always makes you happy?"
+  },
+  {
+    theme: "Curious Brain",
+    emoji: "🧩",
+    words: ["NEURON","MEMORY","ATTENTION","LEARNING","EMOTION","LANGUAGE","COGNITION","CURIOSITY","DOPAMINE"],
+    scienceNote: "This one's about the puzzle itself: hunting for letters uses your attention and memory at the same time, a simple workout for the same brain systems these words describe.",
+    reflectionPrompt: "What's something you learned recently?"
+  },
+  {
+    theme: "Feel-Good Activities",
+    emoji: "🌈",
+    words: ["CREATE","SKETCH","MELODY","RHYTHM","JOURNAL","CAMERA","EXPLORE","PADDLE","TRAIL"],
+    scienceNote: "Reading about activities you enjoy can spark a small bit of the same motivation you'd feel actually doing them, sometimes enough to nudge you to go do it.",
+    reflectionPrompt: "What's something fun you'd like to try again?"
+  },
+  {
+    theme: "Beautiful Places",
+    emoji: "🌎",
+    words: ["VILLAGE","LIGHTHOUSE","HARBOR","CANYON","GLACIER","ISLAND","TEMPLE","BRIDGE","CASTLE"],
+    scienceNote: "Imagining a place, even briefly, lights up some of the same brain areas as actually being there, a tiny bit of mental travel.",
+    reflectionPrompt: "What's a place you'd love to visit?"
+  },
+  {
+    theme: "Daily Positivity",
+    emoji: "🌟",
+    words: ["HOPE","BLOOM","CHERISH","BELIEVE","IMAGINE","DISCOVER","INSPIRE","THRIVE","GRATEFUL","SHINE","WONDER","TOMORROW"],
+    scienceNote: "Words about hope and gratitude gently pull your focus toward what's good, and over time that makes it easier for your brain to notice the positive on its own.",
+    reflectionPrompt: "What are you grateful for today?"
   }
 ];
 
@@ -310,7 +357,7 @@ function loadDay(i){
   state = buildGrid(p.words);
   found = new Set();
   document.getElementById('daycount').textContent = "Day " + (i+1);
-  document.getElementById('themeTitle').textContent = p.theme;
+  document.getElementById('themeTitle').textContent = (p.emoji ? p.emoji + " " : "") + p.theme;
   document.getElementById('scienceNote').textContent = p.scienceNote;
   document.getElementById('reflectionPrompt').textContent = '"' + p.reflectionPrompt + '"';
   document.getElementById('completeMsg').style.display = 'none';
