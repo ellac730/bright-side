@@ -478,11 +478,15 @@ function renderGrid(){
 function renderWordlist(){
   const wl = document.getElementById('wordlist');
   wl.innerHTML = "";
+  // Only show words that actually got placed in the grid (state.placements),
+  // so a chip never appears for a word that failed to place and is impossible to find.
   PUZZLES[current].words.forEach(function(w){
+    const clean = w.replace(/[^A-Z]/g,'');
+    if(!state.placements[clean]) return;
     const chip = document.createElement('span');
     chip.className = 'word-chip';
     chip.textContent = w.replace(/([a-z])([A-Z])/g,'$1 $2');
-    chip.dataset.word = w.replace(/[^A-Z]/g,'');
+    chip.dataset.word = clean;
     wl.appendChild(chip);
   });
 }
