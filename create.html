@@ -451,7 +451,10 @@ document.getElementById('generateBtn').addEventListener('click', function(){
   renderGrid();
   const wl = document.getElementById('wordlist');
   wl.innerHTML = "";
+  // Only show words that actually got placed, so a chip never appears for
+  // a word that failed to fit and would be impossible to find.
   words.forEach(function(w){
+    if(!state.placements[w]) return;
     const chip = document.createElement('span');
     chip.className = 'word-chip';
     chip.textContent = w;
